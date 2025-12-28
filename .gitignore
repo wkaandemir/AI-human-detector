@@ -34,3 +34,6 @@ yarn-error.log
 .env
 
 tweets.md
+
+# Data
+data/
