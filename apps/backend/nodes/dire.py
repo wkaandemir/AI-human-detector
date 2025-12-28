@@ -376,3 +376,18 @@ class DIRENode(BaseNode):
     def preprocess(self, image: np.ndarray) -> np.ndarray:
         """Görseli ön işleme tabii tutar"""
         return image
+
+    def visualize_error_map(self, error_map: np.ndarray,
+                           save_path: str = None) -> np.ndarray:
+        """
+        Error map'i görselleştirir.
+
+        Args:
+            error_map: Error map (H, W) numpy array
+            save_path: Kaydedilecek dosya yolu (opsiyonel)
+
+        Returns:
+            Görselleştirilmiş error map (H, W, 3) RGB
+        """
+        from ..utils.visualization import visualize_error_map as vis_error_map
+        return vis_error_map(error_map, colormap='jet', save_path=save_path)

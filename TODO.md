@@ -111,14 +111,14 @@ Bu doküman, projenin tüm yapılacak işlerini LLM tarafından takip edilebilir
   ```
 
 #### 2.1.3 Classifier
-- [x] ResNet50 classifier modelini yükle (opsiyonel - ileride eklenecek)
+- [ ] ResNet50 classifier modelini yükle (opsiyonel - ileride eklenecek)
 - [x] Error Map → Fake/Real classification implement et (basit threshold)
 - [x] GPU bellek yönetimini ekle (batch processing, cleanup)
 
 #### 2.1.4 Testler
 - [x] `tests/test_dire.py` oluştur
 - [ ] 50 gerçek + 50 sahte görsel ile manuel test
-- [ ] Error Map görselleştirme fonksiyonu ekle
+- [x] Error Map görselleştirme fonksiyonu ekle
 
 ### 2.2 CLIP Node (Semantic Anomaly Detection)
 
@@ -131,7 +131,7 @@ Bu doküman, projenin tüm yapılacak işlerini LLM tarafından takip edilebilir
   ```
 
 #### 2.2.2 Anomaly Detection
-- [x] Linear Probe Classifier'ı implement et (kalibrasyon ile)
+- [ ] Linear Probe Classifier'ı implement et (kalibrasyon ile)
 - [x] Zero-shot anomaly scoring mekanizması ekle
 - [x] Embedding distance hesaplama fonksiyonları
 
@@ -162,7 +162,7 @@ Bu doküman, projenin tüm yapılacak işlerini LLM tarafından takip edilebilir
 
 #### 2.3.3 Testler
 - [x] `tests/test_frequency.py` oluştur
-- [ ] Frekans spektrumu görselleştirme
+- [x] Frekans spektrumu görselleştirme
 
 ---
 
@@ -179,18 +179,18 @@ Bu doküman, projenin tüm yapılacak işlerini LLM tarafından takip edilebilir
 - [ ] Data augmentation pipeline'ı kur
 
 ### 3.2 Birim Testler
-- [ ] Her node için ayrı test dosyaları
-- [ ] Mock görüntüler ile test senaryoları
-- [ ] Edge case'leri test et
+- [x] Her node için ayrı test dosyaları
+- [x] Mock görüntüler ile test senaryoları
+- [x] Edge case'leri test et
   - Boş görüntü
   - Çok düşük/çok yüksek çözünürlük
   - Farklı formatlar (PNG, JPG, WEBP)
 
 ### 3.3 Entegrasyon Testleri
-- [ ] `tests/test_integration.py` oluştur
-- [ ] End-to-end analiz akışı testi
-- [ ] API endpoint testleri
-- [ ] GPU bellek yönetimi testleri
+- [x] `tests/test_integration.py` oluştur
+- [x] End-to-end analiz akışı testi
+- [x] API endpoint testleri
+- [x] GPU bellek yönetimi testleri
 
 ### 3.4 Performans Testleri
 - [ ] İşleme hızı benchmark'ı (saniye başına görüntü)
@@ -229,8 +229,9 @@ Bu doküman, projenin tüm yapılacak işlerini LLM tarafından takip edilebilir
 ### 4.2 Middleware ve Hata Yönetimi
 - [x] CORS middleware
 - [x] Exception handler'lar
-- [ ] Rate limiting (opsiyonel)
-- [ ] Request logging
+- [x] Rate limiting (opsiyonel)
+- [x] Request logging
+- [x] Security headers middleware
 
 ### 4.3 Dokümantasyon
 - [x] OpenAPI (Swagger) dokümantasyonu
@@ -300,7 +301,7 @@ Bu doküman, projenin tüm yapılacak işlerini LLM tarafından takip edilebilir
 |-----|-------|-----------|
 | Faz 1: Çekirdek Kurulum | 🟢 Tamamlandı | 100% |
 | Faz 2: AI Modülleri | 🟢 Tamamlandı | 100% |
-| Faz 3: Test ve Doğrulama | 🟡 Planlanıyor | 0% |
+| Faz 3: Test ve Doğrulama | 🟡 Devam Ediyor | 40% |
 | Faz 4: API ve Entegrasyon | 🟢 Tamamlandı | 100% |
 | Faz 5: Frontend | 🔵 Planlanıyor | 0% |
 

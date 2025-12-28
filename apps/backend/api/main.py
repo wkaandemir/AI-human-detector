@@ -6,7 +6,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from api.endpoints import router
+from api.middleware import (
+    RateLimitMiddleware,
+    RequestLoggingMiddleware,
+    SecurityHeadersMiddleware,
+    HealthCheckMiddleware
+)
 import uvicorn
+import logging
 
 
 def create_app() -> FastAPI:
@@ -24,7 +31,24 @@ def create_app() -> FastAPI:
         redoc_url="/redoc"
     )
 
-    # CORS middleware
+    # Security Headers Middleware (ilk)
+    app.add_middleware(SecurityHeadersMiddleware)
+
+    # Request Logging Middleware
+    app.add_middleware(
+        RequestLoggingMiddleware,
+        log_level=logging.INFO,
+        log_body=False  # Production'da body log'lama güvenlik riski olabilir
+    )
+
+    # Rate Limiting Middleware
+    app.add_middleware(
+        RateLimitMiddleware,
+        requests_per_minute=60,   # Dakikada 60 istek
+        requests_per_hour=1000    # Saatte 1000 istek
+    )
+
+    # CORS middleware (son)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],  # Production'da spesifik origin'ler kullanın
@@ -55,6 +79,23 @@ def create_app() -> FastAPI:
     @app.get("/ping")
     async def ping():
         return {"status": "pong"}
+
+    # Readiness check
+    @app.get("/readiness")
+    async def readiness():
+        return {"status": "ready"}
+
+    # Startup event
+    @app.on_event("startup")
+    async def startup_event():
+        """Uygulama başladığında çalışan fonksiyon"""
+        logging.info("AI Human Detector API başlatılıyor...")
+
+    # Shutdown event
+    @app.on_event("shutdown")
+    async def shutdown_event():
+        """Uygulama kapanırken çalışan fonksiyon"""
+        logging.info("AI Human Detector API kapatılıyor...")
 
     return app
 

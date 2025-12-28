@@ -236,3 +236,70 @@ class FrequencyNode(BaseNode):
         """
         # Frekans analizi için orijinal boyutu koru
         return image
+
+    def visualize_fft_spectrum(self, image: np.ndarray,
+                              save_path: str = None) -> np.ndarray:
+        """
+        FFT frekans spektrumunu görselleştirir.
+
+        Args:
+            image: Görsel (H, W, C) numpy array
+            save_path: Kaydedilecek dosya yolu (opsiyonel)
+
+        Returns:
+            Görselleştirilmiş frekans spektrumu (H, W, 3) RGB
+        """
+        from ..utils.visualization import visualize_frequency_spectrum
+
+        # Grayscale'e çevir
+        if len(image.shape) == 3:
+            gray = np.mean(image, axis=2)
+        else:
+            gray = image
+
+        # 2D FFT uygula
+        fft = np.fft.fft2(gray)
+        fft_shift = np.fft.fftshift(fft)
+
+        # Magnitude spektrumu
+        magnitude = np.abs(fft_shift)
+
+        return visualize_frequency_spectrum(magnitude, log_scale=True, save_path=save_path)
+
+    def visualize_ela_map(self, image: np.ndarray,
+                         save_path: str = None) -> np.ndarray:
+        """
+        ELA map'ini görselleştirir.
+
+        Args:
+            image: Görsel (H, W, C) numpy array
+            save_path: Kaydedilecek dosya yolu (opsiyonel)
+
+        Returns:
+            Görselleştirilmiş ELA map (H, W, 3) RGB
+        """
+        from ..utils.visualization import visualize_ela_map
+
+        # ELA hesapla
+        ela_score, ela_metadata = self._analyze_ela(image)
+
+        # Yeni ELA map'i hesapla (görselleştirme için)
+        if image.dtype != np.uint8:
+            image = (image * 255).astype(np.uint8)
+
+        pil_image = Image.fromarray(image)
+
+        # JPEG sıkıştırması uygula
+        byte_io = io.BytesIO()
+        pil_image.save(byte_io, format='JPEG', quality=self.ela_quality)
+        byte_io.seek(0)
+        compressed = Image.open(byte_io)
+
+        # Farkı hesapla
+        original_arr = np.array(pil_image).astype(np.int16)
+        compressed_arr = np.array(compressed).astype(np.int16)
+
+        # Mutlak fark (ELA map)
+        ela_map = np.abs(original_arr - compressed_arr)
+
+        return visualize_ela_map(ela_map, save_path=save_path)
